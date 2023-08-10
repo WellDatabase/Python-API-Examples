@@ -7,11 +7,18 @@ import math
 headers = {
     'Content-Type': 'application/json',
     'User-Agent': 'Sample Application',
-    'Api-Key': 'Your Api Key'
+    'Api-Key': 'Your API Key'
 }
 
 filters = {
-    'Tag' : "Log Image"
+    'Tags' : ["Log Image"],
+    'HeaderFilters': {
+        'CountyIds': {
+            'Included': [
+                1953
+            ]
+        }
+    }
 }
 
 searchPayload = {
@@ -27,11 +34,11 @@ baseUrl = "https://app.welldatabase.com/api/v2"
 
 with httpx.Client() as client:
     # Get the total rows that match the search criteria
-    response = client.post("%s/filetags/search" % baseUrl, headers=headers, json=searchPayload, timeout=None)
+    response = client.post("%s/files/search" % baseUrl, headers=headers, json=searchPayload, timeout=None)
     result = response.json()
 
     totalFilesToDownload = result['total']
-    print("Total Matches: " + str(totalFilesToDownload))
+    print("Total Files To Download: " + str(totalFilesToDownload))
 
     # Generate the Exports
     pageSize = 100
@@ -40,23 +47,19 @@ with httpx.Client() as client:
 
     print(datetime.datetime.now())
 
-    ids = []
     for i in range(0, pages, 1):
         print("Retrieving Rows:  " + str(i) + "-" + str(i + pageSize))
 
         searchRequest = {'Filters': filters, 'PageSize': pageSize, 'PageOffSet': i}
 
-        fileSearchResponse = client.post("%s/filetags/search" % baseUrl, headers=headers,
+        fileSearchResponse = client.post("%s/files/search" % baseUrl, headers=headers,
                                          json=searchRequest, timeout=None)
 
         fileResults = fileSearchResponse.json();
 
-
+        ids = []
         for row in fileResults['data']:
-            fileId = row['fileId']
-            #temp fix for duplicate tags
-            if fileId not in ids:
-                ids.append(fileId)
+            ids.append(row['id'])
 
         downloadRequest = {
             'Filters': {
@@ -78,9 +81,6 @@ with httpx.Client() as client:
 
         # optionally, delete zip
         os.remove(fileName)
-
-        #reset ids
-        ids = []
 
 print("Done")
 print(datetime.datetime.now())
