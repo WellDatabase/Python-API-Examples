@@ -3,17 +3,16 @@ import httpx
 from zipfile import ZipFile
 import os
 import glob
-import pandas as pd
 import math
 
 headers = {
     'Content-Type': 'application/json',
-    'User-Agent': 'Sample Application',
+    'User-Agent': 'Sample Python Application',
     'Api-Key': 'Your API Key'
 }
 
 filters = {
-    'FileName' : "*.las",
+    'FileName': "*.las",
     'HeaderFilters': {
         'CountyIds': {
             'Included': [

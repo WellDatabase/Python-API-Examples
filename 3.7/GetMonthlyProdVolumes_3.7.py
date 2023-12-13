@@ -4,7 +4,7 @@ API_ENDPOINT = "https://app.welldatabase.com/api/v2/productionVolumes/search"
 
 headers = {
     'Content-Type': 'application/json',
-    'User-Agent': 'A Sample Application',
+    'User-Agent': 'Sample Python Application',
     'Api-Key': 'Your Api Key'
 }
 

@@ -3,8 +3,8 @@ import httpx
 
 headers = {
     'Content-Type': 'application/json',
-    'User-Agent': 'Sample Application',
-    'Api-Key': 'Your Api Key'
+    'User-Agent': 'Sample Python Application',
+    'Api-Key': 'Your API Key'
 }
 
 modifiedSince = datetime.datetime.now() - datetime.timedelta(days=10)
@@ -12,9 +12,7 @@ modifiedSince = datetime.datetime.now() - datetime.timedelta(days=10)
 
 data = {
     'Filters': {
-        'DateLastModified': {
-            'Min': modifiedSince.strftime("%Y-%m-%d")
-        }
+        'Api10': ["4232942588"],
     },
     'SortBy': 'DateCatalogued',
     'SortDirection': 'Descending',

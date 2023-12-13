@@ -6,7 +6,7 @@ import math
 
 headers = {
     'Content-Type': 'application/json',
-    'User-Agent': 'Sample Application',
+    'User-Agent': 'Sample Python Application',
     'Api-Key': 'Your API Key'
 }
 

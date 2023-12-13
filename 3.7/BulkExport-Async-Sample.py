@@ -61,7 +61,7 @@ async def run_export(client, payload, headers, lower_bound, upper_bound):
 async def download():
     headers = {
         'Content-Type': 'application/json',
-        'User-Agent': 'Python Sample Application',
+        'User-Agent': 'Sample Python Application',
         'Api-Key': api_key
     }
 
@@ -91,7 +91,6 @@ async def download():
         result = response.json()
 
         totalRowsToExport = result['total']
-        print("Total Rows To Download: " + format(totalRowsToExport, ","))
 
         upperBound = totalRowsToExport + pageSize
 

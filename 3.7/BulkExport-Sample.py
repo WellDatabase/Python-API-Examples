@@ -7,7 +7,7 @@ import pandas as pd
 
 headers = {
     'Content-Type': 'application/json',
-    'User-Agent': 'Sample Application',
+    'User-Agent': 'Sample Python Application',
     'Api-Key': 'Your Api Key'
 }
 
