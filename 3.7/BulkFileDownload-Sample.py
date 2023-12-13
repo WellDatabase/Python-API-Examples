@@ -32,7 +32,7 @@ searchPayload = {
 }
 
 extractTo = "./file-downloads"
-baseUrl = "https://testsite.welldatabase.com/api/v2"  # "https://app.welldatabase.com/api/v2"
+baseUrl = "https://app.welldatabase.com/api/v2"
 
 with httpx.Client() as client:
     # Get the total rows that match the search criteria
