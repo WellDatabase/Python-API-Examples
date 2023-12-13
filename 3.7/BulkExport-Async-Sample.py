@@ -91,6 +91,7 @@ async def download():
         result = response.json()
 
         totalRowsToExport = result['total']
+        print("Total Rows To Export: " + format(totalRowsToExport, ","))
 
         upperBound = totalRowsToExport + pageSize
 
