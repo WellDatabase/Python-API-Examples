@@ -105,7 +105,7 @@ def schedule_next_run():
     now = datetime.datetime.now()
     next_run = now + datetime.timedelta(seconds=run_every_seconds)
     print("Scheduled To Run " + next_run.strftime("%Y-%m-%d %H:%M:%S"))
-    scheduler.enter(run_every_hours, 1, start_export_schedule, ())
+    scheduler.enter(run_every_seconds, 1, start_export_schedule, ())
 
 
 if run_on_start:
