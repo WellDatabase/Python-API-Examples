@@ -16,7 +16,8 @@ extract_files_to_directory = "./extracted"
 scheduler = sched.scheduler(time.time, time.sleep)
 
 run_every_hours = 24
-run_every_seconds = 5  # run_every_hours * 60 * 60
+seconds_per_hour = 3600
+run_every_seconds = run_every_hours * seconds_per_hour
 
 # should we run an export on start up?
 run_on_start = True
