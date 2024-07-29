@@ -18,7 +18,7 @@ data = {
     'SortBy': 'DateCatalogued',
     'SortDirection': 'Descending',
     'PageSize': 2,
-    'Page': 1
+    'PageOffset': 0
 }
 
 response = requests.post(url = "https://app.welldatabase.com/api/v2/wells/search", headers = headers, json = data)

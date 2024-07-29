@@ -27,7 +27,7 @@ searchPayload = {
     'SortBy': 'DateCatalogued',
     'SortDirection': 'Descending',
     'PageSize': 1,
-    'Page': 1
+    'PageOffset': 0
 }
 
 # Get the total rows that match the search criteria

@@ -81,7 +81,7 @@ async def download():
         'SortBy': 'DateCatalogued',
         'SortDirection': 'Descending',
         'PageSize': 1,
-        'Page': 1
+        'PageOffset': 0
     }
 
     async with httpx.AsyncClient() as client:

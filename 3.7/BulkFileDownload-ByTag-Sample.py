@@ -4,7 +4,7 @@ from zipfile import ZipFile
 import os
 import math
 
-extract_to = "./raster-file-downloads"
+extract_to = os.path.join(os.path.curdir, "raster-file-downloads")
 page_size = 100
 
 base_url = "https://app.welldatabase.com/api/v2"
@@ -33,7 +33,7 @@ searchPayload = {
     'SortBy': 'DateCatalogued',
     'SortDirection': 'Descending',
     'PageSize': 1,
-    'Page': 1
+    'PageOffset': 0
 }
 
 with httpx.Client() as client:
@@ -42,6 +42,10 @@ with httpx.Client() as client:
     result = response.json()
 
     totalFilesToDownload = result['total']
+
+    # limit to available
+    totalFilesToDownload = min(200, totalFilesToDownload)
+
     print("Total Files To Download: " + format(totalFilesToDownload, ","))
 
     # Generate the Exports
@@ -76,6 +80,7 @@ with httpx.Client() as client:
         fileName = "./wdb-files_" + format(i, ",") + "_" + format(i + page_size, ",") + ".zip"
         file = open(fileName, "wb")
         file.write(fileDownloadResponse.content)
+        file.flush()
         file.close()
 
         # extract zip file

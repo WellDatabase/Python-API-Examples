@@ -49,13 +49,13 @@ def run_export():
         'SortBy': 'DateCatalogued',
         'SortDirection': 'Descending',
         'PageSize': 1,
-        'Page': 1
+        'PageOffset': 0
     }
 
     timeout = httpx.Timeout(5, read=None)
     with httpx.Client(timeout=timeout) as client:
         # Get the total rows that match the search criteria
-        response = client.post(base_address + "wells/search", headers=headers, json=search_payload, timeout=timeout)
+        response = client.post(base_address + "wells/search", headers=headers, json=search_payload)
         result = response.json()
 
         totalRowsToExport = result['total']

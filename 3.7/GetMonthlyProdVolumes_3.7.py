@@ -20,8 +20,8 @@ data = {
     },
     'SortBy': '',
     'SortDirection': 'Descending',
-    'PageSize': '2',
-    'Page': '1'
+    'PageSize': 2,
+    'PageOffset': 0
 }
 
 r = httpx.post(url=API_ENDPOINT, headers=headers, json=data)

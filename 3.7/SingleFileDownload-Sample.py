@@ -27,7 +27,7 @@ searchPayload = {
     'SortBy': 'DateCatalogued',
     'SortDirection': 'Descending',
     'PageSize': 1,
-    'Page': 1
+    'PageOffset': 0
 }
 
 extract_to = "./file-downloads"

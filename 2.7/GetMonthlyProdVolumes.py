@@ -23,8 +23,8 @@ data = {
     },
     "SortBy": "",
     "SortDirection": "Descending",
-    "PageSize": "2",
-    "Page": "1"
+    "PageSize": 2,
+    "PageOffset": 0
 }
 
 payload = json.dumps(data)
