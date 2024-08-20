@@ -6,69 +6,81 @@ import httpx
 headers = {
     'Content-Type': 'application/json',
     'User-Agent': 'Sample Python Application',
-    'Api-Key': 'YOUR API KEY'
+    'Api-Key': 'Your API Key'
 }
 
 modifiedSince = datetime.datetime.now() - datetime.timedelta(days=10)
 
-# working within texas
-stateId = 42
-operatorName = 'Comstock Energy'
+def run_search():
+    # default to texas
+    stateId = int(input('Enter State Id: ').strip() or "42")
+    operatorName =  input('Enter Operator Name: ').strip() or 'Comstock Energy'
 
-response = httpx.get(f"https://app.welldatabase.com/api/v2/operator?name={operatorName}&stateId={stateId}",
-                     headers=headers)
-operatorMatches = response.json()
+    response = httpx.get(f"https://app.welldatabase.com/api/v2/operator?name={operatorName}&stateId={stateId}",
+                         headers=headers)
+    operatorMatches = response.json()
 
-matchCount = operatorMatches['total']
+    matchCount = operatorMatches['total']
 
-print("")
-print("")
-print(f"Found {matchCount} Operator(s) matching {operatorName}")
+    print("")
+    print("")
+    print(f"Found {matchCount} Operator(s) matching {operatorName}:")
 
-for op in operatorMatches['data']:
-    print(op['name'])
+    for op in operatorMatches['data']:
+        print(f"{op['id']} - {op['name']}")
 
-operatorId = operatorMatches['data'][0]['id']
+    operatorId = int(input("Enter Operator Id").strip() or operatorMatches['data'][0]['id'])
 
-response = httpx.get(f"https://app.welldatabase.com/api/v2/operator/{operatorId}/leases?stateId={stateId}",
-                     headers=headers)
-leaseMatches = response.json()
+    if operatorId == 'exit':
+        run_search()
 
-matchCount = leaseMatches['total']
-print("")
-print("")
-print(f"Found {matchCount} Lease(s) For Operator {operatorId}")
+    response = httpx.get(f"https://app.welldatabase.com/api/v2/operator/{operatorId}/leases?stateId={stateId}",
+                         headers=headers)
+    leaseMatches = response.json()
 
-for ls in leaseMatches['data']:
-    leaseName = ls['name']
-    parts = re.search("(..)-(.....)?\s*:\s*(.*)?", leaseName)
+    matchCount = leaseMatches['total']
+    print("")
+    print("")
+    print(f"Found {matchCount} Lease(s) For Operator {operatorId}")
 
-    if parts == None:
-        # No distirict/lease id info found
-        print(leaseName + " ( " + ("No District") + " | " + ("No Lease Assigned") + " | " + ("No Lease Name") + " )")
-    else:
-        print(leaseName + " ( " + (parts.group(1) or "No District") + " | " + (
-                parts.group(2) or "No Lease Assigned") + " | " + (parts.group(3) or "No Lease Name") + " )")
+    for ls in leaseMatches['data']:
+        leaseId = ls['id']
+        leaseName = ls['name']
+        parts = re.search("(..)-(.....)?\s*:\s*(.*)?", leaseName)
 
-leaseId = leaseMatches['data'][0]['id']
+        if parts == None:
+            # No district/lease id info found
+            print(str(leaseId) + " - " + leaseName + " ( " + ("No District") + " | " + ("No Lease Assigned") + " | " + ("No Lease Name") + " )")
+        else:
+            print(str(leaseId) + " - " + leaseName + " ( " + (parts.group(1) or "No District") + " | " + (
+                    parts.group(2) or "No Lease Assigned") + " | " + (parts.group(3) or "No Lease Name") + " )")
 
-data = {
-    'Filters': {
-        'LeaseIds': {'Included': [leaseId]},
-    },
-    'SortBy': 'DateCatalogued',
-    'SortDirection': 'Descending',
-    'PageSize': 2,
-    'PageOffset': 0
-}
+    leaseId = int(input("Enter Lease Id: ").strip() or leaseMatches['data'][0]['id'])
 
-response = httpx.post("https://app.welldatabase.com/api/v2/wells/search", headers=headers, json=data)
-wellResults = response.json()
-matchCount = wellResults['total']
+    if leaseId == 'exit':
+        run_search()
 
-print("")
-print("")
-print(f"Found {matchCount} Wells for Lease {leaseId}")
+    data = {
+        'Filters': {
+            'LeaseIds': {'Included': [leaseId]},
+        },
+        'SortBy': 'DateCatalogued',
+        'SortDirection': 'Descending',
+        'PageSize': 10,
+        'PageOffset': 0
+    }
 
-for well in wellResults['data']:
-    print(well['wellName'])
+    response = httpx.post("https://app.welldatabase.com/api/v2/wells/search", headers=headers, json=data)
+    wellResults = response.json()
+    matchCount = wellResults['total']
+
+    print("")
+    print("")
+    print(f"Found {matchCount} Wells for Lease {leaseId}")
+
+    for well in wellResults['data']:
+        print(well['wellName'])
+
+    run_search()
+
+run_search()
